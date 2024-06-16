@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView, TemplateView
 
 from mailing.forms import MailingSettingsForm, MailingMessageForm, MailingModeratorForm
@@ -76,6 +76,10 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:settings_list')
+
+    # def get_success_url(self):
+    #     mailing = self.get_object()
+    #     return reverse('mailing:settings_view', args=[mailing.pk])
 
     def get_form_class(self):
         user = self.request.user

@@ -6,6 +6,7 @@ from recipient.models import Recipient
 
 
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
         user = self.request.user
