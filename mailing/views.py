@@ -77,10 +77,6 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:settings_list')
 
-    # def get_success_url(self):
-    #     mailing = self.get_object()
-    #     return reverse('mailing:settings_view', args=[mailing.pk])
-
     def get_form_class(self):
         user = self.request.user
         if user == self.object.owner or user.is_superuser:
@@ -88,6 +84,11 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
         if user.has_perm('mailing.change_mailingsettings_setting_status'):
             return MailingModeratorForm
         return PermissionDenied
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
 
 class MailingSettingsListView(LoginRequiredMixin, ListView):
